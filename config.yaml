@@ -1,5 +1,5 @@
 input_data:
-  file: "C:/Users/ziden/Desktop/Trainings/IRONHACK/week4/project_w4/first_project/data/raw/amazon_raw.csv"
+  file: "../data/raw/amazon.csv"
 
 output_data:
   file: "../data/clean/cleaned_data_file.csv"

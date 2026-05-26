@@ -1,8 +1,4 @@
 import pandas as pd
-import yaml
-import importlib # to refresh functions imported from functions.py file
-import functions
-
 
 #=============================================================================
 #Split the category colinto several categories
