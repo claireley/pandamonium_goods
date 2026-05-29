@@ -122,4 +122,4 @@ from src.functions import segment_price, plot_rating_distribution
 
 # Data Source
 Dataset obtained from Kaggle.com  
-(Include link if allowed by Kaggle license)
+https://www.kaggle.com/datasets/talalhakem/amazon
