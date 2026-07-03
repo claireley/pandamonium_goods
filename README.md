@@ -1,125 +1,108 @@
-# Project name: Amazon Marketplace Decoding
+# Decoding the Amazon Marketplace
+### A Data-Driven Business Case for PandaMonium Goods
 
-# Project Overview
-This project analyzes an Amazon product dataset (source: Kaggle) to understand how pricing, discounting, and market saturation influence customer satisfaction.
-The goal is to validate or refute three business‑driven hypotheses using exploratory data analysis, visualization, and statistical reasoning.
+## The Finding
+Amazon's Home & Kitchen category is packed with **easy-to-enter, underserved niches**: 
+low-competition, high-demand product types (dust covers, condensers) where quality bars 
+are low and pricing is flexible enough to enter at a premium. We identified specific 
+niche candidates and scored them by opportunity size — this is where PandaMonium 
+should launch first.
 
-# Business Hypotheses
-Hypothesis 1 — Premium Pricing Signals Premium Quality
-Higher product prices naturally signal higher quality, leading to better user sentiment.
+## Key Results
 
-## This analysis explores:
+**Premium pricing signals quality** (H1 — Zidene)  
+Higher-priced products show a much higher share of "Excellent" ratings and almost no 
+poor ratings — price positively predicts perceived quality across the catalog.
 
-### Hypothesis 1 — 
-- How reviewer sentiment varies across price segments
+**Discounting has a ceiling** (H2 — Claire)  
+![Discount Trap](figures/discount_sales.png)  
+Sales volume climbs with discount depth up to ~70% off — but past that, sentiment drops. 
+Heavy discounting doesn't kill sales, but it does erode perceived value. Recommendation: 
+cap promotional discounts at 65%.
 
-- Whether premium products consistently receive higher rating
+**There are real gaps in the market** (H3 — Claire)  
+![Opportunity Scoring](figures/fig3_niche_quality_price.png)  
+By combining review volume, listing count, and price variability, we scored niche 
+candidates on demand vs. competition. Dust covers and condensers surfaced as the top 
+opportunities — high demand, low competition, and room for premium pricing.
 
-- How price influences perceived value and user experience?
+## Data Pipeline
+Beyond the CSV analysis, we modeled and loaded the dataset into a normalized SQL 
+database (products, categories, reviews, users, product_images) to practice relational 
+schema design.  
+![ERD](sql_scripts/ERD.PNG)
 
-### Hypothesis 2 — 
-- Discounts Act as Emotional Anchors
-Large discounts create a psychological “deal effect,” increasing customer satisfaction and ratings.
+## Recommendations
+- Enter niches with high demand + low listing competition (see H3 scoring)
+- Cap discounts at 65% — steeper discounts don't move volume but do hurt sentiment
+- Price toward the premium end where possible — data shows it correlates with satisfaction, not against it
 
-This analysis investigates:
+## Repo Structure
 
-- Whether higher discount percentages correlate with higher ratings
+first_project
+├─ config.yaml
+├─ data
+│  ├─ clean
+│  │  └─ amazon_cleaned.csv
+│  └─ raw
+├─ figures
+│  ├─ discount_rating.png
+│  ├─ discount_sales.png
+│  ├─ ERD.PNG
+│  ├─ fig2_niche_scatter.png
+│  ├─ fig3_niche_quality_price.png
+│  ├─ fig4_categories_rating.png
+│  └─ fig5_rating_distribution_by_price.png
+├─ notebooks
+│  ├─ branding_colors.ipynb
+│  ├─ create_sql_csv.ipynb
+│  ├─ data_cleaning_claire.ipynb
+│  ├─ eda_claire.ipynb
+│  ├─ explore_clean_data_zidene.ipynb
+│  ├─ extra_tables_zidene.ipynb
+│  ├─ functions.py
+│  └─ __pycache__
+│     ├─ functions.cpython-313.pyc
+│     └─ functions.cpython-314.pyc
+├─ pyproject.toml
+├─ README.md
+├─ slides
+│  └─ Amazon Sales Strategy Analysis.pdf
+├─ sql_scripts
+│  ├─ categories.csv
+│  ├─ categories_insert.sql
+│  ├─ create_project1_amazon.sql
+│  ├─ ERD.PNG
+│  ├─ products.csv
+│  ├─ products_insert.sql
+│  ├─ product_categories.csv
+│  ├─ product_categories_insert.sql
+│  ├─ product_images.csv
+│  ├─ product_images_insert.sql
+│  ├─ reviews.csv
+│  ├─ reviews_insert.sql
+│  ├─ users.csv
+│  └─ users_insert.sql
+├─ src
+│  └─ project_template
+│     └─ __init__.py
+└─ uv.lock
 
-- Whether discount‑driven purchases show inflated sentiment
+## How to Run
+1. Cleaned data stored in `data/clean/amazon_cleaned.csv`
+2. Notebooks import shared helpers from `notebooks/functions.py`
+3. Open `data_cleaning_claire.ipynb` → `eda_claire.ipynb` / `explore_clean_data_zidene.ipynb` to reproduce analysis
+4. To reproduce the SQL side: run `create_sql_csv.ipynb`, then execute the `.sql` scripts in `sql_scripts/` in order (categories → products → product_categories → product_images → users → reviews)
 
-- How discount depth affects rating distribution
+## Data Source
+[Amazon Sales Dataset, Kaggle](https://www.kaggle.com/datasets/talalhakem/amazon)
 
-### Hypothesis 3 —
-- Underserved Niches Show High Review Volume but Low Satisfaction
-- Categories with few products but many reviews and low ratings indicate unmet customer needs.
+## Presentation
+https://docs.google.com/presentation/d/1or2I0dxIeo96H9ww6bakcm8ZBFywKj_Gzh_ZptvTnnY/edit?slide=id.g3e4aa31e4e8_0_1#slide=id.g3e4aa31e4e8_0_1
 
-## This analysis identifies:
+## Contributions
+Claire: data cleaning, discount/rating relationship (H2), niche opportunity scoring (H3), SQL schema + load, business recommendations  
+Zidene: pricing/quality relationship (H1)
+sfaction, not against it
 
-Categories with low product availability but high engagement
-
-Segments where customers express dissatisfaction despite high demand
-
-Potential opportunities for new product development
-
-# Repository Structure
-├── README.md                                   <- Project overview and business roadmap
-├── data/
-│   └── amazon.csv                              <- Raw source dataset from Kaggle
-├── notebooks/
-   └── eda_claire.ipynb                         <- Exploratory data analysis & custom plotting pipeline
-   └── explore_clean_data_zidene.ipynb          <- Exploratory data analysis & custom plotting pipeline
-   └── functions.py                             <- all functions used in the project
-├── slides/
-   └── project_slides url                       <- Project presentation slides 
-
-└── figures/
-    ├── fig1_price_vs_rating.png                <- Price segmentation bar charts
-    ├── fig2_discount_trap.png                  <- Dual-axis discount volume/sentiment cliff
-    └── fig3_niche_quality_price.png            <- Opportunity scoring & niche candidate analysis
-    ├── fig4_categories_rating                  <- User ratings by prodcut category
-    └── fig5_rating_distribution_by_price.png   <- Evaluating rating with regards to product pricing
-
-project_slides url: https://docs.google.com/presentation/d/1or2I0dxIeo96H9ww6bakcm8ZBFywKj_Gzh_ZptvTnnY/edit?slide=id.g3e4aa31e4e8_0_1#slide=id.g3e4aa31e4e8_0_1
-# Tools & Libraries
-pandas,matplotlib.pyplot, seaborn, numpy
-
-Jupyter Notebook
-
-Kaggle dataset (Amazon product metadata + ratings)
-
-Git for version control
-
-# Methodology
-- Data ingestion from Kaggle
-
-- Cleaning & preprocessing
-
-- Handling missing values
-
-- Creating price and rating segments
-
-- Normalizing discount rates
-
-- Exploratory Data Analysis
-
-- Sentiment distribution
-
-- Price vs rating relationships
-
-- Discount vs rating correlations
-
-- Hypothesis testing
-
-- Visual evidence
-
-- Statistical indicators
-
-# Insights & recommendations
-
-## Key Findings (Summary)
-### Hypothesis 1 — 
-Premium products show higher proportions of excellent ratings and fewer poor reviews, indicating that price positively influences perceived quality.
-
-### Hypothesis 2 — 
-Large discounts correlate with slightly higher ratings, but the effect is not uniform across categories. Emotional anchoring exists but is not the dominant driver.
-
-### Hypothesis 3 —
-Several categories show low product counts, high review volume, and low satisfaction, signaling underserved niches with strong market potential.
-
-# How to Run the Project
-Place raw data in data/raw/
-
-Run cleaning scripts or notebooks to generate data/cleaned/
-
-Open notebooks in /notebooks to reproduce analysis
-
-Import helper functions from src/functions.py
-
-Example:
-
-python
-from src.functions import segment_price, plot_rating_distribution
-
-# Data Source
-Dataset obtained from Kaggle.com  
-https://www.kaggle.com/datasets/talalhakem/amazon
+## Repo Structure
