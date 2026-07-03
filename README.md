@@ -103,6 +103,3 @@ https://docs.google.com/presentation/d/1or2I0dxIeo96H9ww6bakcm8ZBFywKj_Gzh_ZptvT
 ## Contributions
 Claire: data cleaning, discount/rating relationship (H2), niche opportunity scoring (H3), SQL schema + load, business recommendations  
 Zidene: pricing/quality relationship (H1)
-sfaction, not against it
-
-## Repo Structure
